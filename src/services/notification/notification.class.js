@@ -21,20 +21,20 @@ exports.Notification = class Notification extends Service {
      *  because this is the overwritten create function
      *  and we don't want to call it recursively
      */
-    let newInstance = await super.create(data, params)
+    let newNotification = await super.create(data, params)
 
     if (!data.tags || data.tags.length == 0) {
-      return newInstance
+      return newNotification
     } else {
       let promiseArr = []
       data.tags.forEach(tagText => {
-        promiseArr.push(tagService.create({ 'tag': tagText, 'notification_id': newInstance.id }, params))
+        promiseArr.push(tagService.create({ 'tag': tagText, 'notification_id': newNotification.id }, params))
       })
 
       return Promise.all(promiseArr)
         .then(result => {
-          newInstance.tags = result
-          return newInstance
+          newNotification.tags = result
+          return newNotification
         })
     }
   }
