@@ -1,0 +1,45 @@
+GET http://localhost:3030/notification HTTP/1.1
+
+###
+
+GET http://localhost:3030/notification/1 HTTP/1.1
+
+###
+
+POST http://localhost:3030/notification HTTP/1.1
+Content-Type: application/json
+
+{
+  "source": "matrix",
+  "user": "thomas.a.anderson",
+  "title": "My first notification using this service",
+  "message": "This your last chance. After this there is no turning back. You take the blue pill, the story ends. You wake up in your bed and believe whatever you want to. You take the red pill, you stay in Wonderland, and I show you how deep the rabbit hole goes. Remember, all I'm offering is the truth. Nothing more.",
+  "icon": "icon-plus",
+  "link": "https://en.wikipedia.org/wiki/Matrix",
+  "tags": [ "#COOL", "#NICE", "#TEST" ]
+}
+
+###
+# IT WILL GENERATE AN ERROR AND ROLLBACK EVERYTHING
+POST http://localhost:3030/notification HTTP/1.1
+Content-Type: application/json
+
+{
+  "source": "matrix",
+  "user": "thomas.a.anderson",
+  "title": "My first notification using this service",
+  "message": "This your last chance. After this there is no turning back. You take the blue pill, the story ends. You wake up in your bed and believe whatever you want to. You take the red pill, you stay in Wonderland, and I show you how deep the rabbit hole goes. Remember, all I'm offering is the truth. Nothing more.",
+  "icon": "icon-plus",
+  "link": "https://en.wikipedia.org/wiki/Matrix",
+  "tags": [ { "obj": 123 } ]
+}
+
+###
+
+POST http://localhost:3030/tag HTTP/1.1
+Content-Type: application/json
+
+{
+  "notification_id": 1,
+  "tag": "#NEO"
+}

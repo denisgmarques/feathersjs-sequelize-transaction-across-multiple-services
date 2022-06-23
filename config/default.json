@@ -1,0 +1,20 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "paginate": {},
+  "mysql": "mysql://root:root@localhost:3306/notification-service",
+  "authentication": {
+    "entity": null,
+    "secret": "aW5uZW8=",
+    "authStrategies": [
+      "oidc",
+      "jwt"
+    ],
+    "jwtOptions": {
+      "algorithm": "RS256"
+    },
+    "oidc": {
+      "issuer": "AUTH_ISSUER"
+    }
+  }
+}
