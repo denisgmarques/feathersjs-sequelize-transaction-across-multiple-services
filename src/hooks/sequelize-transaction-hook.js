@@ -1,13 +1,20 @@
+const debug = require('debug')('feathers-sequelize-transaction')
+
 /* eslint-disable require-atomic-updates */
-const start = (options = {}) => {
+const begin = (options = {}) => {
   return async hook => {
-    if (hook.params.transaction || (hook.params.sequelize && options.params.sequelize.transaction)) {
-      // console.trace('Using the existing transaction')
+    if (
+      hook.params.transaction ||
+      (hook.params.sequelize && options.params.sequelize.transaction)
+    ) {
+      // already in transaction probably in different hook or service
+      // so we dont create or commit the transaction in this service
       return hook
     }
 
     const sequelize = hook.app.get('sequelizeClient')
     const transaction = await sequelize.transaction()
+    transaction.owner = hook.path
 
     hook.params.transaction = transaction
     hook.params.sequelize = hook.params.sequelize || {}
@@ -17,39 +24,49 @@ const start = (options = {}) => {
   }
 }
 
-const end = () => {
-  return hook => {
+const commit = () => {
+  return async hook => {
     const trx = hook.params.sequelize.transaction || hook.params.transaction
 
-    if (!trx || trx.finished) return hook
-
-    return trx.commit().then(() => {
+    if (!trx || !trx.owner || trx.owner !== hook.path) {
+      // transaction probably from different hook or service
+      // so we dont commit or rollback the transaction in this service
+      return hook
+    }
+    await trx.commit().then(() => {
       delete hook.params.sequelize.transaction
       delete hook.params.transaction
-      return hook
     })
+    return hook
   }
 }
 
 const rollback = () => {
-  return hook => {
+  return async hook => {
     const trx = hook.params.sequelize.transaction || hook.params.transaction
 
-    if (!trx || trx.finished) return hook
+    if (!trx || !trx.owner || trx.owner !== hook.path) {
+      // transaction probably from different hook or service
+      // so we dont commit or rollback the transaction in this service
+      return hook
+    }
 
-    return trx.rollback().then(() => {
-      console.error(hook.error)
+    try {
+      await trx.rollback()
       delete hook.params.sequelize.transaction
       delete hook.params.transaction
-      return hook
-    })
+    } catch (err) {
+      debug(err)
+    }
+
+    return hook
   }
 }
 
 module.exports = {
   transaction: {
-    start,
-    end,
+    begin,
+    commit,
     rollback
   }
 }

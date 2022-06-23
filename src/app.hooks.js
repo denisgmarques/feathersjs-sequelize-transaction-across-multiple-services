@@ -7,7 +7,7 @@ const { transaction } = require('./hooks/sequelize-transaction-hook')
 
 module.exports = {
   before: {
-    all: [transaction.start()],
+    all: [transaction.begin()],
     find: [],
     get: [],
     create: [],
@@ -17,7 +17,7 @@ module.exports = {
   },
 
   after: {
-    all: [transaction.end()],
+    all: [transaction.commit()],
     find: [],
     get: [],
     create: [],
