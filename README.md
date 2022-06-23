@@ -25,8 +25,8 @@ Getting up and running is as easy as 1, 2, 3 (maybe 4).
     ```
 3. Run a MySQL in a docker container (or use a previous installed mysql, you need to create the database notification-service)
 
-   ```
-	docker run -p 3306:3306 --name notification-service-mysql	-e MYSQL_ROOT_PASSWORD=root	-e MYSQL_DATABASE=notification-service -d mysql:8.0
+  ```
+	docker run -p 3306:3306 --name notification-service-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=notification-service -d mysql:8.0
 	```
 4. Start your app
 
