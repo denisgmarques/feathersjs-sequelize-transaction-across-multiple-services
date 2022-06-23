@@ -1,3 +1,8 @@
+# THIS FILE CAN BE USED WITH THE VISUAL STUDIO CODE PLUGIN "Rest Client"
+# ON VSCODE TYPE CTRL+P
+# PASTE THIS: ext install humao.rest-client
+# AND HIT ENTER
+
 GET http://localhost:3030/notification HTTP/1.1
 
 ###

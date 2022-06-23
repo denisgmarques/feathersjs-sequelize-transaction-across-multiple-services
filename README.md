@@ -4,9 +4,9 @@
 
 ## Important files to see the transaction control changes
 
-[app.hooks.js](src/hooks/../app.hooks.js)
-[sequelize-transaction-hook.js](src/hooks/sequelize-transaction-hook.js)
-[notification.class.js](src/services/notification/notification.class.js)
+- [app.hooks.js](src/hooks/../app.hooks.js)
+- [sequelize-transaction-hook.js](src/hooks/sequelize-transaction-hook.js)
+- [notification.class.js](src/services/notification/notification.class.js)
 
 ## About
 
